@@ -7557,12 +7557,85 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
 })(window.Zepto || window.jQuery, window, document);
 
 ;
-$('.home-slider').owlCarousel({
-  items: 1,
-  loop: true,
-  nav: true,
-  dots: false,
-  navText: ['<i class="icon icon-left-arrow"></i>', '<i class="icon icon-right-arrow"></i>'],
-  navContainerClass: 'owl-nav-arrow container',
-  navClass: ['arrow-prev', 'arrow-next']
+$(function () {
+  $('.home-slider').owlCarousel({
+    items: 1,
+    loop: true,
+    nav: true,
+    dots: false,
+    navText: ['<i class="icon icon-left-arrow"></i>', '<i class="icon icon-right-arrow"></i>'],
+    navContainerClass: 'owl-nav-arrow container',
+    navClass: ['arrow-prev', 'arrow-next']
+  });
+  $('.specialists-carousel').owlCarousel({
+    loop: true,
+    nav: true,
+    dots: true,
+    margin: 30,
+    navText: ['<i class="icon icon-left-arrow"></i>', '<i class="icon icon-right-arrow"></i>'],
+    navContainerClass: 'owl-nav-arrow container',
+    navClass: ['arrow-prev', 'arrow-next'],
+    responsiveClass: true,
+    responsive: {
+      0: {
+        items: 1
+      },
+      480: {
+        items: 2
+      },
+      768: {
+        items: 3
+      },
+      1024: {
+        items: 4
+      }
+    }
+  });
+  $('.reviews-carousel').owlCarousel({
+    loop: true,
+    nav: true,
+    dots: true,
+    margin: 30,
+    navText: ['<i class="icon icon-left-arrow"></i>', '<i class="icon icon-right-arrow"></i>'],
+    navContainerClass: 'owl-nav-arrow container',
+    navClass: ['arrow-prev', 'arrow-next'],
+    responsiveClass: true,
+    responsive: {
+      480: {
+        items: 1
+      },
+      768: {
+        items: 2
+      },
+      1024: {
+        items: 2
+      }
+    }
+  });
+  var inProgress = false;
+  var startFrom = 10;
+  $(window).scroll(function () {
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200 && !inProgress) {
+      $.ajax({
+        url: 'ajax.items.php',
+        method: 'POST',
+        data: {
+          "start": startFrom
+        },
+        beforeSend: function beforeSend() {
+          inProgress = true;
+        }
+      }).done(function (data) {
+        data = jQuery.parseJSON(data);
+
+        if (data.length > 0) {
+          $.each(data, function (index, data) {
+            $("#articles").append("<p><b>" + data.title + "</b><br />" + data.text + "</p>");
+          });
+          inProgress = false;
+          startFrom += 10;
+        }
+      });
+    }
+  });
 });
