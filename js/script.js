@@ -7638,4 +7638,51 @@ $(function () {
       });
     }
   });
+  $('.photo-gallery').ready(function () {
+    var photo_item = $(this).find('.col-md-4');
+
+    if (photo_item.length > 8) {
+      var gallery_height_hide = photo_item.outerHeight() * 2;
+      $('.photo-gallery .row').height(gallery_height_hide).css({
+        'overflow': 'hidden'
+      });
+    } else {
+      $('a[data-toggle="show-more"]').hide();
+    }
+
+    $('a[data-toggle="show-more"]').click(function (e) {
+      e.preventDefault();
+      $('.photo-gallery .row').css({
+        'height': 'auto'
+      });
+      $(this).hide();
+    });
+
+    if (photo_item.length > 16) {
+      $('.photo-gallery a.show-more-link').show();
+    } else {
+      $('.photo-gallery a.show-more-link').hide();
+    }
+  });
+  $('.last-news-carousel').owlCarousel({
+    loop: true,
+    nav: true,
+    dots: true,
+    margin: 30,
+    navText: ['<i class="icon icon-left-arrow"></i>', '<i class="icon icon-right-arrow"></i>'],
+    navContainerClass: 'owl-nav-arrow container',
+    navClass: ['arrow-prev', 'arrow-next'],
+    responsiveClass: true,
+    responsive: {
+      0: {
+        items: 1
+      },
+      480: {
+        items: 2
+      },
+      768: {
+        items: 3
+      }
+    }
+  });
 });
